@@ -1,9 +1,12 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 using ServiceStack.Redis;
 using System;
+using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace kpmg_worker
 {
@@ -58,15 +61,33 @@ namespace kpmg_worker
 
     class Program
     {
+        private static IConfiguration _configuration;
+
+
+
+
+
+
         private readonly IMongoCollection<Game> _games;
 
         static void Main(string[] args)
         {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile($"appsettings.json");
 
-            RedisEndpoint redisEndpoint = new RedisEndpoint("redis-17278.c263.us-east-1-2.ec2.cloud.redislabs.com", 17278, "9GrKGvUVbs7Z6eCX1n3ftDbbH6WNM7TF");
+            _configuration = builder.Build();
+
+            var _mongoConfig = new MongoConfig();
+            var _redisConfig = new RedisConfig();
+            var _workerConfig = new WorkerConfig();
+            new ConfigureFromConfigurationOptions<MongoConfig>(_configuration.GetSection("MongoConfig")).Configure(_mongoConfig);
+            new ConfigureFromConfigurationOptions<RedisConfig>(_configuration.GetSection("RedisConfig")).Configure(_redisConfig);
+            new ConfigureFromConfigurationOptions<WorkerConfig>(_configuration.GetSection("WorkerConfig")).Configure(_workerConfig);
+
+            RedisEndpoint redisEndpoint = new RedisEndpoint(_redisConfig.Endpoint, _redisConfig.Port, _redisConfig.Password);
 
             using var redisClient = new RedisClient(redisEndpoint);
-
 
             while (true)
             {
@@ -78,9 +99,9 @@ namespace kpmg_worker
 
                 if (keys.Any())
                 {
-                    var client = new MongoClient("mongodb+srv://admin:QpK2uGBYjYD9gMEp@cluster0.qx3ic.mongodb.net/GameDb?retryWrites=true&w=majority");
-                    var database = client.GetDatabase("GameDb");
-                    var collection = database.GetCollection<Game>("Games");
+                    var client = new MongoClient(_mongoConfig.Endpoint);
+                    var database = client.GetDatabase(_mongoConfig.DatabaseName);
+                    var collection = database.GetCollection<Game>(_mongoConfig.CollectionName);
 
                     var gamesTemporary = redisClient.GetAll<Game>(keys);
 
@@ -119,13 +140,13 @@ namespace kpmg_worker
                 if (!executou) Console.WriteLine("\n-Não existem games no cache para processar\n");
 
                 var proximaExecucao = DateTime.Now;
-                proximaExecucao = proximaExecucao.AddMilliseconds(1000 * 60 * 1);
+                proximaExecucao = proximaExecucao.AddMilliseconds(_workerConfig.ScheduleInMilliseconds);
 
                 Console.WriteLine("-Fim " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
 
                 Console.WriteLine($"\n*** Próxima execução {proximaExecucao.ToString("MM/dd/yyyy HH:mm:ss")} ***\n\n");
 
-                System.Threading.Thread.Sleep(1000 * 60 * 1); // 1 minuto
+                Thread.Sleep((int)_workerConfig.ScheduleInMilliseconds);
 
                 Console.WriteLine("*********************************************\n");
             }
