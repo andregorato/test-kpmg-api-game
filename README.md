@@ -1,9 +1,16 @@
 # KPMG API GAME
-## responsável por gerenciar resultados de partidas de jogos online 
+
+### || Para executar, basta dar play no projeto pelo visual studio, pois os serviços utilizados estão na nuvem e estão previamente configurados no projeto||
+
+## O projeto está estruturado em 3 grandes partes
+- **kpmg-api-game** - Api onde expõe 2 endpoints apenas
+- **kpmg-core** - Class Library onde tem classes bases para o projeto evitar redundâncias e garantindo o princípio DRY
+- **kpmg-worker** - Console Application responsável por rodar de tempos em tempos, para verificar se existe algo no Cache do **Redis** para persistir no **MongoDB**, esse tempo de execução é totalmente configurável, basta ir no arquivo **appsettings.json** do projeto e alterar a propriedade **ScheduleInMilliseconds** para o valor desejado em **Milissegundos**
+
 ## Features
 
-- Registra o resultado de um jogo, com as seguintes informações (ID do jogador, ID do jogo, número de pontos ganhos (positivos ou negativos) e Timestamp )
-- Devolve um ranking dos jogadores e suas pontuações com as seguintes informações (data em que o balanço de pontos do jogador foi atualizado pela última vez (usando o fuso horário do servidor de aplicação))
+- Registra o resultado de um jogo, com as seguintes informações (**ID do jogador, ID do jogo, número de pontos ganhos (positivos ou negativos) e Timestamp**)
+- Devolve um ranking dos jogadores e suas pontuações com as seguintes informações (**data em que o balanço de pontos do jogador foi atualizado pela última vez (usando o fuso horário do servidor de aplicação**))
 
 ## Tecnologias Utilizadas
 
