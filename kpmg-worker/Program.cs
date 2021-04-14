@@ -43,7 +43,7 @@ namespace kpmg_worker
             while (true)
             {
                 Console.WriteLine("*** Buscando novos registros no cache... ***\n");
-                Console.WriteLine("-Início " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
+                Console.WriteLine("-Início " + DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm:ss"));
 
                 var keys = _redisClient.GetAllKeys();
                 var wasExecute = false;
@@ -79,10 +79,10 @@ namespace kpmg_worker
 
                 if (!wasExecute) Console.WriteLine("\n-Não existem games no cache para processar\n");
 
-                var proximaExecucao = DateTime.Now;
+                var proximaExecucao = DateTime.UtcNow;
                 proximaExecucao = proximaExecucao.AddMilliseconds(_workerConfig.ScheduleInMilliseconds);
 
-                Console.WriteLine("-Fim " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
+                Console.WriteLine("-Fim " + DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm:ss"));
 
                 Console.WriteLine($"\n*** Próxima execução {proximaExecucao.ToString("MM/dd/yyyy HH:mm:ss")} ***\n\n");
 
