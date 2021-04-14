@@ -15,8 +15,6 @@
       "launchUrl": "api/game",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DATABASE_NAME": "GameDb",
-        "BOOKS_COLLECTION_NAME": "Games"
       }
     },
     "kpmg_api_game": {
@@ -26,8 +24,6 @@
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DATABASE_NAME": "GameDb",
-        "BOOKS_COLLECTION_NAME": "Games"
       }
     }
   }

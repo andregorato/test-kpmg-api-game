@@ -41,25 +41,25 @@ namespace kpmg_api_game.Controllers
         {
             game.SetKey();
 
-            var previousResult = _redis.Get<Game>(game.Key);
-            var hasPreviousResult = previousResult != null;
+            var gameCache = _redis.Get<Game>(game.Key);
+            var hasPreviousResult = gameCache != null;
 
             if (hasPreviousResult)
             {
-                previousResult.Win += game.Win;
-                previousResult.Timestamp = game.Timestamp;
+                gameCache.Win += game.Win;
+                gameCache.Timestamp = game.Timestamp;
             }
             else
-                previousResult = game;
+                gameCache = game;
 
-            _redis.Set(game.Key, previousResult);
+            _redis.Set(game.Key, gameCache);
 
             var gameX = _gameRepository.FindGame(game.Key);
 
             if (gameX != null)
-                previousResult.Win += gameX.Win;
+                gameCache.Win += gameX.Win;
 
-            return new JsonResult(new { TotalBalance = previousResult.Win });
+            return new JsonResult(new { TotalBalance = gameCache.Win });
         }
     }
 }
