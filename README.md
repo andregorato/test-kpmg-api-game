@@ -1,6 +1,6 @@
 # KPMG API GAME
 
-### || Para executar, abrir o projeto através da solution **kpmg-game** e dar play no visual studio 2019, pois os serviços utilizados estão na nuvem e estão previamente configurados no projeto||
+### || Para executar, abrir o projeto através da solution **kpmg-game.sln** e dar play no visual studio 2019, pois os serviços utilizados estão na nuvem e estão previamente configurados no projeto||
 
 ## O projeto está estruturado em 3 grandes partes
 - **kpmg-api-game** - Api onde expõe 2 endpoints apenas
