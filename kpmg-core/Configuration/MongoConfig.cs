@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace kpmg_worker
+﻿namespace kpmg_core.Configuration
 {
     public class MongoConfig
     {

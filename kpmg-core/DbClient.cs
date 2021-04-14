@@ -1,9 +1,5 @@
 ﻿using kpmg_core.Interfaces.Db;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace kpmg_core
 {

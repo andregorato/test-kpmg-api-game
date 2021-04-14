@@ -11,5 +11,9 @@
     <PackageReference Include="ServiceStack.Redis" Version="5.10.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\kpmg-core\kpmg-core.csproj" />
+  </ItemGroup>
+
 
 </Project>

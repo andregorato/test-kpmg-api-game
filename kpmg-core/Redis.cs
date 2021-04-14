@@ -7,7 +7,7 @@ namespace kpmg_core
     public class Redis : IRedis<Game>
     {
         private readonly RedisEndpoint _redisEndpoint;
-        
+
         public Redis(string endpoint, int port, string password)
         {
             _redisEndpoint = new RedisEndpoint(endpoint, port, password);
@@ -17,7 +17,7 @@ namespace kpmg_core
         {
             using var redisClient = new RedisClient(_redisEndpoint);
 
-           return  redisClient.Get<Game>(key);
+            return redisClient.Get<Game>(key);
         }
 
         public IDictionary<string, Game> GetAll<Game>(IEnumerable<string> keys)
@@ -35,7 +35,13 @@ namespace kpmg_core
         public bool Remove(string key)
         {
             using var redisClient = new RedisClient(_redisEndpoint);
-           return redisClient.Remove(key);
+            return redisClient.Remove(key);
+        }
+
+        public bool Set<T>(string key, T value)
+        {
+            using var redisClient = new RedisClient(_redisEndpoint);
+            return redisClient.Set(key, value);
         }
     }
 }

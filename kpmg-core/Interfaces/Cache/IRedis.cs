@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace kpmg_core.Interfaces.Cache
 {
@@ -10,5 +8,6 @@ namespace kpmg_core.Interfaces.Cache
         IDictionary<string, T> GetAll<T>(IEnumerable<string> keys);
         T Get<T>(string key);
         bool Remove(string key);
+        bool Set<T>(string key, T value);
     }
 }

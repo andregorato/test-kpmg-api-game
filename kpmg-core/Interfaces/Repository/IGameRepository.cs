@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace kpmg_core.Interfaces.Repository
 {
@@ -9,5 +7,6 @@ namespace kpmg_core.Interfaces.Repository
         void AddGame(T game);
         T FindGame(string key);
         long UpdateGame(string key, T game);
+        List<T> GetRanking();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using kpmg_core;
+using kpmg_core.Configuration;
 using kpmg_core.Interfaces.Cache;
 using kpmg_core.Interfaces.Db;
 using kpmg_core.Interfaces.Repository;
@@ -14,7 +15,7 @@ using System.Threading;
 namespace kpmg_worker
 {
     class Program
-    {  
+    {
         static void Main(string[] args)
         {
             var builder = new ConfigurationBuilder()
@@ -37,8 +38,8 @@ namespace kpmg_worker
 
             var provider = services.BuildServiceProvider();
             var _gameRepository = provider.GetService<IGameRepository<Game>>();
-            var _redisClient = provider.GetService<IRedis<Game>>();         
-                
+            var _redisClient = provider.GetService<IRedis<Game>>();
+
             while (true)
             {
                 Console.WriteLine("*** Buscando novos registros no cache... ***\n");
@@ -67,7 +68,7 @@ namespace kpmg_worker
                             _gameRepository.AddGame(previousResult);
                         else
                             _gameRepository.UpdateGame(gameItem.Key, previousResult);
-                     
+
                         Console.WriteLine("-Removendo do Cache \n");
                         _redisClient.Remove(gameItem.Key);
                         count++;
